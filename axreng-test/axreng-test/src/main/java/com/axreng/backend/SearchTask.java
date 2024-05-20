@@ -4,31 +4,37 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SearchTask {
-    private String id;
-    private String keyword;
-    private List<String> results = new ArrayList<>();
 
-    public String getId() {
-        return id;
-    }
+	private String id;
+	private String keyword;
+	private List<String> results = new ArrayList<>();
 
-    public void setId(String id) {
-        this.id = id;
-    }
+	public SearchTask(String keyword) {
+		super();
+		this.keyword = keyword;
+	}
 
-    public String getKeyword() {
-        return keyword;
-    }
+	public String getId() {
+		return id;
+	}
 
-    public void setKeyword(String keyword) {
-        this.keyword = keyword;
-    }
+	public void setId(String id) {
+		this.id = id;
+	}
 
-    public List<String> getResults() {
-        return results;
-    }
+	public String getKeyword() {
+		return keyword;
+	}
 
-    public void addResult(String result) {
-        this.results.add(result);
-    }
+	public void setKeyword(String keyword) {
+		this.keyword = keyword;
+	}
+
+	public List<String> getResults() {
+		return results;
+	}
+
+	public void addResult(String result) {
+		this.results.add(result);
+	}
 }
