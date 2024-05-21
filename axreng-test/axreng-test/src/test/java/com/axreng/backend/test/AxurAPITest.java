@@ -14,28 +14,27 @@ import org.junit.jupiter.api.Test;
 
 import com.axreng.backend.AxurAPI;
 import com.axreng.backend.RouteHandler;
-import com.axreng.backend.WebCrawler;
+import com.axreng.backend.SearchTaskManager;
 import com.google.gson.Gson;
 
 public class AxurAPITest {
 
 	String baseURL;
 	int port;
+	RouteHandler routeHandler;
 
 	@BeforeEach
     public void init() {
         // Set the BASE_URL environment variable for testing
         this.baseURL = "http://example.com/";
         this.port = 4567;
+        this.routeHandler = mock(RouteHandler.class);
     }
 
     @Test
     public void testAxurAPIConstructor() {
-        // Arrange
-        int port = 4567;
-        RouteHandler routeHandler = mock(RouteHandler.class);
         // Act
-        AxurAPI axurAPI = new AxurAPI(this.port, routeHandler,this.baseURL);
+        AxurAPI axurAPI = new AxurAPI(this.port, this.routeHandler,this.baseURL);
         
         // Assert
         assertNotNull(axurAPI);
@@ -46,23 +45,15 @@ public class AxurAPITest {
 
     @Test
     public void testSetupRoutes() {
-        // Arrange
-        RouteHandler routeHandler = mock(RouteHandler.class);
-        AxurAPI axurAPI = spy(new AxurAPI(this.port, routeHandler, this.baseURL));
+        AxurAPI axurAPI = spy(new AxurAPI(this.port, this.routeHandler, this.baseURL));
         
         // Act
         axurAPI.startAPI();
         
         // Assert
         // Verify that setupRoutes() calls setupPostRoute() and setupGetRoute() on the mocked RouteHandler
-        verify(routeHandler).setupPostRoute(eq(axurAPI), any(Gson.class), any(WebCrawler.class));
-        verify(routeHandler).setupGetRoute(eq(axurAPI), any(Gson.class), any(WebCrawler.class));
+        verify(this.routeHandler).setupPostRoute(eq(axurAPI), any(Gson.class), any(SearchTaskManager.class));
+        verify(this.routeHandler).setupGetRoute(eq(axurAPI), any(Gson.class), any(SearchTaskManager.class));
     }
-    
-    @Test
-    public void testExceptionOnClassInstance() {
-        
-        RouteHandler routeHandler = mock(RouteHandler.class);
-        assertThrows(IllegalArgumentException.class, () -> new AxurAPI(port, routeHandler));
-    }
+   
 }

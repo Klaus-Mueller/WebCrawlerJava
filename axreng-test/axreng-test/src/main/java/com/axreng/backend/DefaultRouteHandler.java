@@ -6,22 +6,23 @@ import static spark.Spark.get;
 import static spark.Spark.post;
 
 public class DefaultRouteHandler implements RouteHandler {
+	
     @Override
-    public void setupPostRoute(AxurAPI axurAPI, Gson gson, WebCrawler webCrawler) {
+    public void setupPostRoute(AxurAPI axurAPI, Gson gson, SearchTaskManager searchTaskManager) {
         post("/crawl", (request, response) -> {
             response.type("application/json");
-            SearchTask task = gson.fromJson(request.body(), SearchTask.class);
-            String taskId = webCrawler.startSearch(task);
+            String keyword = gson.fromJson(request.body(), SearchTask.class).getKeyword();
+            String taskId = searchTaskManager.startSearch(keyword);
             return gson.toJson(new TaskResponse(taskId));
         }, gson::toJson);
     }
 
     @Override
-    public void setupGetRoute(AxurAPI axurAPI, Gson gson, WebCrawler webCrawler) {
+    public void setupGetRoute(AxurAPI axurAPI, Gson gson, SearchTaskManager searchTaskManager) {
         get("/tasks/:id", (request, response) -> {
             response.type("application/json");
             String taskId = request.params(":id");
-            SearchTask task = webCrawler.getTask(taskId);
+            SearchTask task = searchTaskManager.getTask(taskId);
             if (task != null) {
                 return gson.toJson(task);
             } else {

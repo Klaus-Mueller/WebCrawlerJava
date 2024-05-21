@@ -5,13 +5,13 @@ import com.google.gson.Gson;
 import static spark.Spark.*;
 
 public class AxurAPI {
+	
     private int port;
     private Gson gson;
     private WebCrawler webCrawler;
     private RouteHandler routeHandler;
-
+    private SearchTaskManager searchTaskManager;
     
- // This is for UnitTest Only.
     public AxurAPI(int port, RouteHandler routeHandler, String baseURL) {
         this.port = port;
         this.routeHandler = routeHandler;
@@ -21,6 +21,7 @@ public class AxurAPI {
             throw new IllegalArgumentException("BASE_URL environment variable is not set or is empty");
         }
         this.webCrawler = new WebCrawler(baseURL);
+        this.searchTaskManager = new SearchTaskManager(this.webCrawler);
     }
 
     public AxurAPI(int port, RouteHandler routeHandler) {
@@ -35,8 +36,8 @@ public class AxurAPI {
      * Create Get and Post Routes
      */
     private void setupRoutes() {
-        routeHandler.setupPostRoute(this, gson, webCrawler);
-        routeHandler.setupGetRoute(this, gson, webCrawler);
+        routeHandler.setupPostRoute(this, gson, searchTaskManager);
+        routeHandler.setupGetRoute(this, gson, searchTaskManager);
     }
 
     // Getters for testing
