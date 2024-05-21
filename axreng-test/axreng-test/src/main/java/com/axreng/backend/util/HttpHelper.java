@@ -12,8 +12,6 @@ public class HttpHelper {
 
 	public static String getRequest(String urlString) {
 		try {
-			 // Remove ".." segments from the URL
-		    urlString = urlString.replaceAll("\\.\\./", "");
 			URL url = new URL(urlString);
 			URI uri = url.toURI().normalize();
 			url = uri.toURL();

@@ -40,4 +40,23 @@ public class WebCrawlerTest {
         List<String> links4 = webCrawler4.extractLinks(pageContent4);
         assertEquals(0, links4.size()); // Malformed link should be ignored
     }
+    
+    @Test
+    public void testExtractLinkThread() {
+        // Existing test cases
+        
+        // Test case 5: Large page content with multiple links (to test threading)
+        StringBuilder largePageContent = new StringBuilder();
+        largePageContent.append("<html><body>");
+        for (int i = 0; i < 10000; i++) {
+            largePageContent.append("<a href=\"http://example.com/page").append(i).append("\"></a>");
+        }
+        largePageContent.append("</body></html>");
+
+        WebCrawler webCrawler5 = new WebCrawler("http://example.com");
+        List<String> links5 = webCrawler5.extractLinks(largePageContent.toString());
+        
+        // Assert that the number of links extracted matches the expected count
+        assertEquals(10000, links5.size());
+    }
 }

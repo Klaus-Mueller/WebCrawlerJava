@@ -1,9 +1,11 @@
 package com.axreng.backend;
 
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.stream.Collectors;
 
 public class SearchTaskManager {
 	private Map<String, SearchTask> tasks = new ConcurrentHashMap<>();
@@ -21,20 +23,18 @@ public class SearchTaskManager {
 		return task.getId();
 	}
 
-	public SearchTask getActiveSearch(String taskId) {
-		SearchTask task = tasks.get(taskId);
-		if (task != null && task.getStatus() == SearchTask.Status.ACTIVE) {
-			return task;
-		}
-		return null;
+	public List<SearchTask> getActiveSearchTaks() {
+		 return tasks.values()
+                 .stream()
+                 .filter(task -> task.getStatus().equals(SearchTask.Status.ACTIVE))
+                 .collect(Collectors.toList());
 	}
 
-	public SearchTask getCompletedSearch(String taskId) {
-		SearchTask task = tasks.get(taskId);
-		if (task != null && task.getStatus() == SearchTask.Status.DONE) {
-			return task;
-		}
-		return null;
+	public List<SearchTask> getCompletedSearchTaks() {
+		 return tasks.values()
+                 .stream()
+                 .filter(task -> task.getStatus().equals(SearchTask.Status.DONE))
+                 .collect(Collectors.toList());
 	}
 
 	public SearchTask getTask(String taskId) {

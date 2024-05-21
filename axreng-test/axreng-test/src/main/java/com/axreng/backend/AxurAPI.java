@@ -38,6 +38,8 @@ public class AxurAPI {
     private void setupRoutes() {
         routeHandler.setupPostRoute(this, gson, searchTaskManager);
         routeHandler.setupGetRoute(this, gson, searchTaskManager);
+        routeHandler.setupGetActiveTasks(this, gson, searchTaskManager);
+        routeHandler.setupGetCompletedTasks(this, gson, searchTaskManager);
     }
 
     // Getters for testing
