@@ -24,17 +24,17 @@ public class SearchTaskManager {
 	}
 
 	public List<SearchTask> getActiveSearchTaks() {
-		 return tasks.values()
-                 .stream()
-                 .filter(task -> task.getStatus().equals(SearchTask.Status.ACTIVE))
-                 .collect(Collectors.toList());
+		return tasks.values()
+				.stream()
+				.filter(task -> task.getStatus().equals(SearchTask.Status.ACTIVE))
+				.collect(Collectors.toList());
 	}
 
 	public List<SearchTask> getCompletedSearchTaks() {
-		 return tasks.values()
-                 .stream()
-                 .filter(task -> task.getStatus().equals(SearchTask.Status.DONE))
-                 .collect(Collectors.toList());
+		return tasks.values()
+				.stream()
+				.filter(task -> task.getStatus().equals(SearchTask.Status.DONE))
+				.collect(Collectors.toList());
 	}
 
 	public SearchTask getTask(String taskId) {

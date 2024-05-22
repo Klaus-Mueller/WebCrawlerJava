@@ -5,12 +5,12 @@ import java.util.List;
 import java.util.UUID;
 
 public class SearchTask {
-	
+
 	public enum Status {
-	    ACTIVE,
-	    DONE
+		ACTIVE,
+		DONE
 	}
-	
+
 	private String id;
 	private String keyword;
 	private List<String> results = new ArrayList<>();
@@ -68,7 +68,7 @@ public class SearchTask {
 		// Take the first 8 characters
 		this.setId(uuid.substring(0, 8)); 
 	}
-	
+
 	private void validateKeyword(String keyword) {
 		if (keyword == null || keyword.length() < MIN_KEYWORD_LENGTH || keyword.length() > MAX_KEYWORD_LENGTH) {
 			throw new IllegalArgumentException("Keyword must have length between " + MIN_KEYWORD_LENGTH + " and " + MAX_KEYWORD_LENGTH + " characters.");

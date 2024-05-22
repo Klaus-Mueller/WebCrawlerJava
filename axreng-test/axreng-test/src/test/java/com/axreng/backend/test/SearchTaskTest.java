@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import com.axreng.backend.SearchTask;
@@ -12,7 +13,8 @@ import com.axreng.backend.SearchTask;
 public class SearchTaskTest {
 
     @Test
-    public void testValidKeywordLength() {
+    @DisplayName("Should not throw exception for valid keyword length")
+    public void shouldNotThrowExceptionForValidKeywordLength() {
         // Valid keyword length should not throw an exception
         assertDoesNotThrow(() -> new SearchTask("test")); // Minimum length
         assertDoesNotThrow(() -> new SearchTask("shorterKeyword")); // Between minimum and maximum length
@@ -20,7 +22,8 @@ public class SearchTaskTest {
     }
 
     @Test
-    public void testInvalidKeywordLength() {
+    @DisplayName("Should throw exception for invalid keyword length")
+    public void shouldThrowExceptionForInvalidKeywordLength() {
         // Invalid keyword length should throw an exception
         assertThrows(IllegalArgumentException.class, () -> new SearchTask(null)); // Null keyword
         assertThrows(IllegalArgumentException.class, () -> new SearchTask("")); // Empty keyword
@@ -29,17 +32,18 @@ public class SearchTaskTest {
     }
 
     @Test
-    public void testTaskIdGeneration() {
-        // Create a search task with a keyword
+    @DisplayName("Should generate task ID with eight alphanumeric characters")
+    public void shouldGenerateTaskIdWithEightAlphanumericCharacters() {
+        // Arrange: Create a search task with a keyword
         SearchTask searchTask = new SearchTask("test");
         
-        // Get the generated ID
+        // Act: Get the generated ID
         String taskId = searchTask.getId();
         
-        // Check if the ID has 8 characters
+        // Assert: Check if the ID has 8 characters
         assertEquals(8, taskId.length());
         
-        // Check if the ID is alphanumeric
+        // Assert: Check if the ID is alphanumeric
         assertTrue(taskId.matches("[a-zA-Z0-9]+"));
     }
 }

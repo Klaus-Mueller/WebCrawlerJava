@@ -24,36 +24,41 @@ public class AxurAPITest {
 	RouteHandler routeHandler;
 
 	@BeforeEach
-    public void init() {
-        // Set the BASE_URL environment variable for testing
-        this.baseURL = "http://example.com/";
-        this.port = 4567;
-        this.routeHandler = mock(RouteHandler.class);
-    }
+	public void init() {
+		// Set up necessary fields before each test
+		this.baseURL = "http://example.com/";
+		this.port = 4567;
+		this.routeHandler = mock(RouteHandler.class);
+	}
 
-    @Test
-    public void testAxurAPIConstructor() {
-        // Act
-        AxurAPI axurAPI = new AxurAPI(this.port, this.routeHandler,this.baseURL);
-        
-        // Assert
-        assertNotNull(axurAPI);
-        assertEquals(port, axurAPI.getPort());
-        assertNotNull(axurAPI.getGson());
-        assertNotNull(axurAPI.getWebCrawler());
-    }
+	@Test
+	public void testAxurAPIConstructorWithBaseURL() {
+		// Act
+		AxurAPI axurAPI = new AxurAPI(this.port, this.routeHandler, this.baseURL);
 
-    @Test
-    public void testSetupRoutes() {
-        AxurAPI axurAPI = spy(new AxurAPI(this.port, this.routeHandler, this.baseURL));
-        
-        // Act
-        axurAPI.startAPI();
-        
-        // Assert
-        // Verify that setupRoutes() calls setupPostRoute() and setupGetRoute() on the mocked RouteHandler
-        verify(this.routeHandler).setupPostRoute(eq(axurAPI), any(Gson.class), any(SearchTaskManager.class));
-        verify(this.routeHandler).setupGetRoute(eq(axurAPI), any(Gson.class), any(SearchTaskManager.class));
-    }
-   
+		// Assert
+		assertNotNull(axurAPI);
+		assertEquals(port, axurAPI.getPort());
+		assertNotNull(axurAPI.getGson());
+		assertNotNull(axurAPI.getWebCrawler());
+	}
+
+
+	@Test
+	public void testAxurAPIConstructorWithInvalidBaseURL() {
+		// Act & Assert
+		assertThrows(IllegalArgumentException.class, () -> {
+			new AxurAPI(this.port, this.routeHandler, "");
+		});
+	}
+
+	@Test
+	public void testSetupRoutes() {
+		AxurAPI axurAPI = spy(new AxurAPI(this.port, this.routeHandler, this.baseURL));
+		axurAPI.startAPI();
+		verify(this.routeHandler).setupPostRoute(eq(axurAPI), any(Gson.class), any(SearchTaskManager.class));
+		verify(this.routeHandler).setupGetRoute(eq(axurAPI), any(Gson.class), any(SearchTaskManager.class));
+		verify(this.routeHandler).setupGetActiveTasks(eq(axurAPI), any(Gson.class), any(SearchTaskManager.class));
+		verify(this.routeHandler).setupGetCompletedTasks(eq(axurAPI), any(Gson.class), any(SearchTaskManager.class));
+	}
 }

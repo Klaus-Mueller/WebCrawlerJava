@@ -17,37 +17,37 @@ import com.axreng.backend.WebCrawler;
 public class SearchTaskManagerTest {
 
 	private final WebCrawler webCrawler = new WebCrawler("http://example.com");
-    private final ExecutorService executorService = Executors.newFixedThreadPool(10); // Number of concurrent requests
-    private final SearchTaskManager searchTaskManager = new SearchTaskManager(this.webCrawler);
-    
-    @Test
-    public void testStartSearch() {
-        SearchTaskManager searchTaskManager = new SearchTaskManager(this.webCrawler);
-        String taskId = searchTaskManager.startSearch("test");
-        // Assert
-        assertNotNull(taskId);
-        SearchTask taskResult = searchTaskManager.getTask(taskId);
-        assertEquals(taskResult.getKeyword(), "test");
-    }
-    
-    @RepeatedTest(10) // Number of repeated tests (concurrent requests)
-    public void testConcurrentRequests() throws InterruptedException {
-        // Submit the crawl task to the ExecutorService for concurrent execution
-        executorService.submit(() -> {
-            // Simulate some processing time
-            try {
-            	String taskId = this.searchTaskManager.startSearch("test123");
-                Thread.sleep(1000); // Simulate processing time
-                assertNotNull(taskId);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        });
-    }
+	private final ExecutorService executorService = Executors.newFixedThreadPool(10); // Number of concurrent requests
+	private final SearchTaskManager searchTaskManager = new SearchTaskManager(this.webCrawler);
 
-    // Shutdown the ExecutorService after all tests are completed
-    protected void afterAll() throws InterruptedException {
-        executorService.shutdown();
-        executorService.awaitTermination(5, TimeUnit.SECONDS);
-    }
+	@Test
+	public void testStartSearch() {
+		SearchTaskManager searchTaskManager = new SearchTaskManager(this.webCrawler);
+		String taskId = searchTaskManager.startSearch("test");
+		// Assert
+		assertNotNull(taskId);
+		SearchTask taskResult = searchTaskManager.getTask(taskId);
+		assertEquals(taskResult.getKeyword(), "test");
+	}
+
+	@RepeatedTest(10) // Number of repeated tests (concurrent requests)
+	public void testConcurrentRequests() throws InterruptedException {
+		// Submit the crawl task to the ExecutorService for concurrent execution
+		executorService.submit(() -> {
+			// Simulate some processing time
+			try {
+				String taskId = this.searchTaskManager.startSearch("test123");
+				Thread.sleep(1000); // Simulate processing time
+				assertNotNull(taskId);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		});
+	}
+
+	// Shutdown the ExecutorService after all tests are completed
+	protected void afterAll() throws InterruptedException {
+		executorService.shutdown();
+		executorService.awaitTermination(5, TimeUnit.SECONDS);
+	}
 }
