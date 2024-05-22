@@ -21,11 +21,5 @@ The Web Crawler is a Java program designed to fetch web pages from a specified U
 2. Run the `WebCrawler` class to start the crawling process.
 3. Monitor the console output for progress updates and results.
 
-## Dependencies
-- Java (version X.X.X)
-
 ## Contributing
 Contributions are welcome! Please fork the repository and submit a pull request with your changes.
-
-## License
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
