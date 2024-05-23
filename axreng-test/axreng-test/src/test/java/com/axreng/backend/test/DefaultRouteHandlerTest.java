@@ -11,7 +11,7 @@ import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import com.axreng.backend.AxurAPI;
+import com.axreng.backend.API;
 import com.axreng.backend.DefaultRouteHandler;
 import com.axreng.backend.SearchTask;
 import com.axreng.backend.SearchTaskManager;
@@ -35,14 +35,14 @@ public class DefaultRouteHandlerTest {
 
 	@Test
 	public void testSetupPostRoute() throws Exception {
-	    AxurAPI axurAPI = mock(AxurAPI.class);
+	    API api = mock(API.class);
 	    SearchTaskManager searchTaskManager = mock(SearchTaskManager.class);
 	    Request request = mock(Request.class);
 	    Response response = mock(Response.class);
 	    when(request.body()).thenReturn("{\"keyword\":\"test keyword\"}");
 	    String taskId = "task123";
 	    when(searchTaskManager.startSearch("test keyword")).thenReturn(taskId);
-	    Route postRoute = routeHandler.createSearcTaskPostRoute(axurAPI, gson, searchTaskManager);
+	    Route postRoute = routeHandler.createSearcTaskPostRoute(api, gson, searchTaskManager);
 	    Object result = postRoute.handle(request, response);
 	    verify(response).type("application/json");
 	    verify(response).status(200); 
@@ -52,14 +52,14 @@ public class DefaultRouteHandlerTest {
 	
 	 @Test
 	    public void testSetupGetRoute() throws Exception {
-	        AxurAPI axurAPI = mock(AxurAPI.class);
+	        API api = mock(API.class);
 	        SearchTaskManager searchTaskManager = mock(SearchTaskManager.class);
 	        Request request = mock(Request.class);
 	        Response response = mock(Response.class);
 	        when(request.params(":id")).thenReturn("task123");
 	        SearchTask task = new SearchTask("Test Task");
 	        when(searchTaskManager.getTask("task123")).thenReturn(task);
-	        Route getRoute = routeHandler.createSearchTaskGetRoute(axurAPI, gson, searchTaskManager);
+	        Route getRoute = routeHandler.createSearchTaskGetRoute(api, gson, searchTaskManager);
 	        Object result = getRoute.handle(request, response);
 	        verify(response).type("application/json");
 	        verify(response).body(gson.toJson(task));
@@ -68,7 +68,7 @@ public class DefaultRouteHandlerTest {
 	 
 	 @Test
 	    public void testSetupGetActiveTasks() throws Exception {
-	        AxurAPI axurAPI = mock(AxurAPI.class);
+	        API api = mock(API.class);
 	        SearchTaskManager searchTaskManager = mock(SearchTaskManager.class);
 	        Request request = mock(Request.class);
 	        Response response = mock(Response.class);
@@ -78,7 +78,7 @@ public class DefaultRouteHandlerTest {
 	        );
 	        
 	        when(searchTaskManager.getActiveSearchTaks()).thenReturn(activeTasks);
-	        Route getRoute = routeHandler.createGetActiveTasksRoute(axurAPI, gson, searchTaskManager);
+	        Route getRoute = routeHandler.createGetActiveTasksRoute(api, gson, searchTaskManager);
 	        Object result = getRoute.handle(request, response);
 	        verify(response).type("application/json");
 	        verify(response).status(200);
@@ -89,7 +89,7 @@ public class DefaultRouteHandlerTest {
 	 
 	 @Test
 	    public void testSetupGetCompletedTasks() throws Exception {
-	        AxurAPI axurAPI = mock(AxurAPI.class);
+	        API api = mock(API.class);
 	        SearchTaskManager searchTaskManager = mock(SearchTaskManager.class);
 	        Request request = mock(Request.class);
 	        Response response = mock(Response.class);
@@ -98,7 +98,7 @@ public class DefaultRouteHandlerTest {
 	                new SearchTask("Completed Task 2")
 	        );
 	        when(searchTaskManager.getCompletedSearchTaks()).thenReturn(completedTasks);
-	        Route getRoute = routeHandler.createGetCompletedTasksRoute(axurAPI, gson, searchTaskManager);
+	        Route getRoute = routeHandler.createGetCompletedTasksRoute(api, gson, searchTaskManager);
 	        Object result = getRoute.handle(request, response);
 	        verify(response).status(200);
 	        verify(response).body(gson.toJson(completedTasks));

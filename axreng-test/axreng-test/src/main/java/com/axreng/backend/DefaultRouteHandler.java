@@ -14,7 +14,7 @@ public class DefaultRouteHandler implements RouteHandler {
 
 
 	@Override
-	public Route createSearcTaskPostRoute(AxurAPI axurAPI, Gson gson, SearchTaskManager searchTaskManager) {
+	public Route createSearcTaskPostRoute(API api, Gson gson, SearchTaskManager searchTaskManager) {
 		return (request, response) -> {
 			response.type("application/json");
 			String keyword = gson.fromJson(request.body(), SearchTask.class).getKeyword();
@@ -27,7 +27,7 @@ public class DefaultRouteHandler implements RouteHandler {
 	}
 
 	@Override
-	public Route createSearchTaskGetRoute(AxurAPI axurAPI, Gson gson, SearchTaskManager searchTaskManager) {
+	public Route createSearchTaskGetRoute(API api, Gson gson, SearchTaskManager searchTaskManager) {
 		return (request, response) -> {
 			response.type("application/json");
 			String taskId = request.params(":id");
@@ -45,7 +45,7 @@ public class DefaultRouteHandler implements RouteHandler {
 	}
 
 	@Override
-	public Route createGetActiveTasksRoute(AxurAPI axurAPI, Gson gson, SearchTaskManager searchTaskManager) {
+	public Route createGetActiveTasksRoute(API api, Gson gson, SearchTaskManager searchTaskManager) {
 		return (request, response) -> {
 			response.type("application/json");
 			List<SearchTask> tasks = searchTaskManager.getActiveSearchTaks();
@@ -62,7 +62,7 @@ public class DefaultRouteHandler implements RouteHandler {
 	}
 
 	@Override
-	public Route createGetCompletedTasksRoute(AxurAPI axurAPI, Gson gson, SearchTaskManager searchTaskManager) {
+	public Route createGetCompletedTasksRoute(API api, Gson gson, SearchTaskManager searchTaskManager) {
 		return (request, response) -> {
 			response.type("application/json");
 			List<SearchTask> tasks = searchTaskManager.getCompletedSearchTaks();
@@ -79,26 +79,26 @@ public class DefaultRouteHandler implements RouteHandler {
 	}
 
 	@Override
-	public void setupSearchTaskPostRoute(AxurAPI axurAPI, Gson gson, SearchTaskManager searchTaskManager) {
-		Route postRoute = createSearcTaskPostRoute(axurAPI, gson, searchTaskManager);
+	public void setupSearchTaskPostRoute(API api, Gson gson, SearchTaskManager searchTaskManager) {
+		Route postRoute = createSearcTaskPostRoute(api, gson, searchTaskManager);
 		post("/crawl", postRoute);
 	}
 
 	@Override
-	public void setupSearchTaskGetRoute(AxurAPI axurAPI, Gson gson, SearchTaskManager searchTaskManager) {
-		Route getRoute = createSearchTaskGetRoute(axurAPI, gson, searchTaskManager);
+	public void setupSearchTaskGetRoute(API api, Gson gson, SearchTaskManager searchTaskManager) {
+		Route getRoute = createSearchTaskGetRoute(api, gson, searchTaskManager);
 		get("/tasks/:id", getRoute);
 	}
 
 	@Override
-	public void setupGetActiveTasks(AxurAPI axurAPI, Gson gson, SearchTaskManager searchTaskManager) {
-		Route getRoute = createGetActiveTasksRoute(axurAPI, gson, searchTaskManager);
+	public void setupGetActiveTasks(API api, Gson gson, SearchTaskManager searchTaskManager) {
+		Route getRoute = createGetActiveTasksRoute(api, gson, searchTaskManager);
 		get("/tasks/status/active", getRoute);
 	}
 
 	@Override
-	public void setupGetCompletedTasks(AxurAPI axurAPI, Gson gson, SearchTaskManager searchTaskManager) {
-		Route getRoute = createGetCompletedTasksRoute(axurAPI, gson, searchTaskManager);
+	public void setupGetCompletedTasks(API api, Gson gson, SearchTaskManager searchTaskManager) {
+		Route getRoute = createGetCompletedTasksRoute(api, gson, searchTaskManager);
 		get("/tasks/status/done", getRoute);
 	}
 

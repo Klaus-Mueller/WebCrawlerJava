@@ -7,16 +7,16 @@ import org.slf4j.LoggerFactory;
 
 import com.google.gson.Gson;
 
-public class AxurAPI {
+public class API {
 
-	private static final Logger logger = LoggerFactory.getLogger(AxurAPI.class);
+	private static final Logger logger = LoggerFactory.getLogger(API.class);
 
 	private int port;
 	private Gson gson;
 	private RouteHandler routeHandler;
 	private SearchTaskManager searchTaskManager;
 
-	public AxurAPI(int port, RouteHandler routeHandler, String baseURL) {
+	public API(int port, RouteHandler routeHandler, String baseURL) {
 		if (baseURL == null || baseURL.isEmpty()) {
 			throw new IllegalArgumentException("BASE_URL environment variable is not set or is empty");
 		}
@@ -25,10 +25,10 @@ public class AxurAPI {
 		port(this.port);
 		this.gson = new Gson();
 		this.searchTaskManager = new SearchTaskManager(baseURL);
-		logger.info("AxurAPI initialized with port: {} and baseURL: {}", port, baseURL);
+		logger.info("API initialized with port: {} and baseURL: {}", port, baseURL);
 	}
 
-	public AxurAPI(int port, RouteHandler routeHandler) {
+	public API(int port, RouteHandler routeHandler) {
 		this(port, routeHandler, System.getenv("BASE_URL"));
 	}
 

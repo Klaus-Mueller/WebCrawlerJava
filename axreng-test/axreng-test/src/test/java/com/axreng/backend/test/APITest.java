@@ -12,12 +12,12 @@ import static org.mockito.Mockito.verify;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import com.axreng.backend.AxurAPI;
+import com.axreng.backend.API;
 import com.axreng.backend.RouteHandler;
 import com.axreng.backend.SearchTaskManager;
 import com.google.gson.Gson;
 
-public class AxurAPITest {
+public class APITest {
 
 	String baseURL;
 	int port;
@@ -32,32 +32,32 @@ public class AxurAPITest {
 	}
 
 	@Test
-	public void testAxurAPIConstructorWithBaseURL() {
+	public void testAPIConstructorWithBaseURL() {
 		// Act
-		AxurAPI axurAPI = new AxurAPI(this.port, this.routeHandler, this.baseURL);
+		API api = new API(this.port, this.routeHandler, this.baseURL);
 
 		// Assert
-		assertNotNull(axurAPI);
-		assertEquals(port, axurAPI.getPort());
-		assertNotNull(axurAPI.getGson());
+		assertNotNull(api);
+		assertEquals(port, api.getPort());
+		assertNotNull(api.getGson());
 	}
 
 
 	@Test
-	public void testAxurAPIConstructorWithInvalidBaseURL() {
+	public void testapiConstructorWithInvalidBaseURL() {
 		// Act & Assert
 		assertThrows(IllegalArgumentException.class, () -> {
-			new AxurAPI(this.port, this.routeHandler, "");
+			new API(this.port, this.routeHandler, "");
 		});
 	}
 
 	@Test
 	public void testSetupRoutes() {
-		AxurAPI axurAPI = spy(new AxurAPI(this.port, this.routeHandler, this.baseURL));
-		axurAPI.startAPI();
-		verify(this.routeHandler).setupSearchTaskPostRoute(eq(axurAPI), any(Gson.class), any(SearchTaskManager.class));
-		verify(this.routeHandler).setupSearchTaskGetRoute(eq(axurAPI), any(Gson.class), any(SearchTaskManager.class));
-		verify(this.routeHandler).setupGetActiveTasks(eq(axurAPI), any(Gson.class), any(SearchTaskManager.class));
-		verify(this.routeHandler).setupGetCompletedTasks(eq(axurAPI), any(Gson.class), any(SearchTaskManager.class));
+		API api = spy(new API(this.port, this.routeHandler, this.baseURL));
+		api.startAPI();
+		verify(this.routeHandler).setupSearchTaskPostRoute(eq(api), any(Gson.class), any(SearchTaskManager.class));
+		verify(this.routeHandler).setupSearchTaskGetRoute(eq(api), any(Gson.class), any(SearchTaskManager.class));
+		verify(this.routeHandler).setupGetActiveTasks(eq(api), any(Gson.class), any(SearchTaskManager.class));
+		verify(this.routeHandler).setupGetCompletedTasks(eq(api), any(Gson.class), any(SearchTaskManager.class));
 	}
 }
