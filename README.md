@@ -13,13 +13,13 @@ The Web Crawler is a Java program designed to fetch web pages from a specified U
 ## Installation
 1. Clone the repository to your local machine.
 2. Ensure you have Java installed on your system.
-3. Open the project in your preferred Java IDE.
+3. Ensure the BASE_URL env is set to the base URL.
 4. Build the project.
 
 ## Usage
-1. Modify the `WebCrawler` class to specify the base URL you want to crawl.
-2. Run the `WebCrawler` class to start the crawling process.
-3. Monitor the console output for progress updates and results.
+1. Open http://localhost:4567/
+2. Use the Web Crawler UI Page to add processes.
+![image](https://github.com/Klaus-Mueller/WebCrawlerJava/assets/6924934/8060e860-6e9f-476d-8fc2-6e5de83c7a6b)
 
-## Contributing
-Contributions are welcome! Please fork the repository and submit a pull request with your changes.
+
+## Documentation:
