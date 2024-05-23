@@ -32,9 +32,9 @@ public class WebCrawler {
 		WebCrawlerThreadManager threadManager = new WebCrawlerThreadManager();
 		threadManager.executeCrawling(this, urlsToVisit, task);
 		logger.info("Search completed for keyword: {} Results: {}", task.getKeyword(), task.getResults());
-		task.setStatus(Status.DONE);
 		long endTime = System.currentTimeMillis();
-		long elapsedTimeSecs = (endTime - startTime) / 1000;
+		int elapsedTimeSecs = (int) (endTime - startTime) / 1000;
+		task.completeTask(elapsedTimeSecs);
 		logger.info("Crawl method runtime: {} seconds:", elapsedTimeSecs);
 	}
 

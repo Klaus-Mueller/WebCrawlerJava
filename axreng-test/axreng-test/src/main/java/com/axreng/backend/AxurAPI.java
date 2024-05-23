@@ -43,8 +43,9 @@ public class AxurAPI {
 	 * Create Get and Post Routes
 	 */
 	private void setupRoutes() {
-		routeHandler.setupPostRoute(this, gson, searchTaskManager);
-		routeHandler.setupGetRoute(this, gson, searchTaskManager);
+		routeHandler.setupIndex();
+		routeHandler.setupSearchTaskPostRoute(this, gson, searchTaskManager);
+		routeHandler.setupSearchTaskGetRoute(this, gson, searchTaskManager);
 		routeHandler.setupGetActiveTasks(this, gson, searchTaskManager);
 		routeHandler.setupGetCompletedTasks(this, gson, searchTaskManager);
 		logger.info("Routes have been set up");

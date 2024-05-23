@@ -8,12 +8,13 @@ import java.util.List;
 import com.google.gson.Gson;
 
 import spark.Route;
+import spark.Spark;
 
 public class DefaultRouteHandler implements RouteHandler {
 
 
 	@Override
-	public Route createPostRoute(AxurAPI axurAPI, Gson gson, SearchTaskManager searchTaskManager) {
+	public Route createSearcTaskPostRoute(AxurAPI axurAPI, Gson gson, SearchTaskManager searchTaskManager) {
 		return (request, response) -> {
 			response.type("application/json");
 			String keyword = gson.fromJson(request.body(), SearchTask.class).getKeyword();
@@ -26,7 +27,7 @@ public class DefaultRouteHandler implements RouteHandler {
 	}
 
 	@Override
-	public Route createGetRoute(AxurAPI axurAPI, Gson gson, SearchTaskManager searchTaskManager) {
+	public Route createSearchTaskGetRoute(AxurAPI axurAPI, Gson gson, SearchTaskManager searchTaskManager) {
 		return (request, response) -> {
 			response.type("application/json");
 			String taskId = request.params(":id");
@@ -78,14 +79,14 @@ public class DefaultRouteHandler implements RouteHandler {
 	}
 
 	@Override
-	public void setupPostRoute(AxurAPI axurAPI, Gson gson, SearchTaskManager searchTaskManager) {
-		Route postRoute = createPostRoute(axurAPI, gson, searchTaskManager);
+	public void setupSearchTaskPostRoute(AxurAPI axurAPI, Gson gson, SearchTaskManager searchTaskManager) {
+		Route postRoute = createSearcTaskPostRoute(axurAPI, gson, searchTaskManager);
 		post("/crawl", postRoute);
 	}
 
 	@Override
-	public void setupGetRoute(AxurAPI axurAPI, Gson gson, SearchTaskManager searchTaskManager) {
-		Route getRoute = createGetRoute(axurAPI, gson, searchTaskManager);
+	public void setupSearchTaskGetRoute(AxurAPI axurAPI, Gson gson, SearchTaskManager searchTaskManager) {
+		Route getRoute = createSearchTaskGetRoute(axurAPI, gson, searchTaskManager);
 		get("/tasks/:id", getRoute);
 	}
 
@@ -99,5 +100,10 @@ public class DefaultRouteHandler implements RouteHandler {
 	public void setupGetCompletedTasks(AxurAPI axurAPI, Gson gson, SearchTaskManager searchTaskManager) {
 		Route getRoute = createGetCompletedTasksRoute(axurAPI, gson, searchTaskManager);
 		get("/tasks/status/done", getRoute);
+	}
+
+	@Override
+	public void setupIndex() {
+		 Spark.staticFiles.location("/static"); // Static files
 	}
 }

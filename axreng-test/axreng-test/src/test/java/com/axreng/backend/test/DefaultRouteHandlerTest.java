@@ -42,7 +42,7 @@ public class DefaultRouteHandlerTest {
 	    when(request.body()).thenReturn("{\"keyword\":\"test keyword\"}");
 	    String taskId = "task123";
 	    when(searchTaskManager.startSearch("test keyword")).thenReturn(taskId);
-	    Route postRoute = routeHandler.createPostRoute(axurAPI, gson, searchTaskManager);
+	    Route postRoute = routeHandler.createSearcTaskPostRoute(axurAPI, gson, searchTaskManager);
 	    Object result = postRoute.handle(request, response);
 	    verify(response).type("application/json");
 	    verify(response).status(200); 
@@ -59,7 +59,7 @@ public class DefaultRouteHandlerTest {
 	        when(request.params(":id")).thenReturn("task123");
 	        SearchTask task = new SearchTask("Test Task");
 	        when(searchTaskManager.getTask("task123")).thenReturn(task);
-	        Route getRoute = routeHandler.createGetRoute(axurAPI, gson, searchTaskManager);
+	        Route getRoute = routeHandler.createSearchTaskGetRoute(axurAPI, gson, searchTaskManager);
 	        Object result = getRoute.handle(request, response);
 	        verify(response).type("application/json");
 	        verify(response).body(gson.toJson(task));

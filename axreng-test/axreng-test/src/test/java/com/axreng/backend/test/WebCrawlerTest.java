@@ -78,10 +78,13 @@ public class WebCrawlerTest {
 		// Create a mock SearchTask
 		SearchTask taskMock = mock(SearchTask.class);
 
+		long startTime = System.currentTimeMillis(); 
 		// Call the crawl method
 		webCrawler.crawl(taskMock);
+		long endTime = System.currentTimeMillis();
+		int elapsedTimeSecs = (int) (endTime - startTime) / 1000;
 
-		verify(taskMock).setStatus(SearchTask.Status.DONE);
+		verify(taskMock).completeTask(elapsedTimeSecs);
 	}
 
 	@Test

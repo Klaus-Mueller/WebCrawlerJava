@@ -56,8 +56,8 @@ public class AxurAPITest {
 	public void testSetupRoutes() {
 		AxurAPI axurAPI = spy(new AxurAPI(this.port, this.routeHandler, this.baseURL));
 		axurAPI.startAPI();
-		verify(this.routeHandler).setupPostRoute(eq(axurAPI), any(Gson.class), any(SearchTaskManager.class));
-		verify(this.routeHandler).setupGetRoute(eq(axurAPI), any(Gson.class), any(SearchTaskManager.class));
+		verify(this.routeHandler).setupSearchTaskPostRoute(eq(axurAPI), any(Gson.class), any(SearchTaskManager.class));
+		verify(this.routeHandler).setupSearchTaskGetRoute(eq(axurAPI), any(Gson.class), any(SearchTaskManager.class));
 		verify(this.routeHandler).setupGetActiveTasks(eq(axurAPI), any(Gson.class), any(SearchTaskManager.class));
 		verify(this.routeHandler).setupGetCompletedTasks(eq(axurAPI), any(Gson.class), any(SearchTaskManager.class));
 	}

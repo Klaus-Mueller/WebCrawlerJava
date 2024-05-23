@@ -15,6 +15,7 @@ public class SearchTask {
 	private String keyword;
 	private List<String> results = new ArrayList<>();
 	private Status status;
+	private long executionTimeInSeconds;
 	private static final int MIN_KEYWORD_LENGTH = 4;
 	private static final int MAX_KEYWORD_LENGTH = 32;
 
@@ -73,5 +74,18 @@ public class SearchTask {
 		if (keyword == null || keyword.length() < MIN_KEYWORD_LENGTH || keyword.length() > MAX_KEYWORD_LENGTH) {
 			throw new IllegalArgumentException("Keyword must have length between " + MIN_KEYWORD_LENGTH + " and " + MAX_KEYWORD_LENGTH + " characters.");
 		}
+	}
+
+	public long getExecutionTimeInSeconds() {
+		return executionTimeInSeconds;
+	}
+
+	public void setExecutionTimeInSeconds(long executionTimeInSeconds) {
+		this.executionTimeInSeconds = executionTimeInSeconds;
+	}
+
+	public void completeTask(int executionTimeInSeconds) {
+		setExecutionTimeInSeconds(executionTimeInSeconds);
+		setStatus(Status.DONE);
 	}
 }

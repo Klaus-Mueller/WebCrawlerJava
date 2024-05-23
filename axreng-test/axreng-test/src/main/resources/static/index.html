@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Web Crawler</title>
+<link rel="stylesheet" type="text/css" href="styles/index.css">
+</head>
+<body>
+	<div class="container">
+		<h1>Web Crawler</h1>
+		<form id="crawlForm">
+			<label for="keyword">Enter keyword to search:</label> <input
+				type="text" id="keyword" name="keyword" required>
+			<button type="submit">Start Crawl</button>
+		</form>
+
+		<div class="results">
+			<h2>Results</h2>
+			<ul id="resultsList"></ul>
+
+			<table id="taskTable" border="1">
+				<thead>
+					<tr>
+						<th>Task ID</th>
+						<th>Keyword</th>
+						<th>Status</th>
+						<th>Execution Time(Seconds)</th>
+						<th>Results</th>
+					</tr>
+				</thead>
+				<tbody>
+				</tbody>
+			</table>
+		</div>
+	</div>
+
+	<script>
+	document.getElementById('crawlForm').addEventListener('submit', async function(event) {
+	    event.preventDefault();
+	    const keyword = document.getElementById('keyword').value; // Get the keyword from the input field
+	    const resultsList = document.getElementById('resultsList');
+	    resultsList.innerHTML = '';
+
+	    try {
+	        const response = await fetch('/crawl', {
+	            method: 'POST',
+	            headers: {
+	                'Content-Type': 'application/json'
+	            },
+	            body: JSON.stringify({ keyword })
+	        }).then(response => {
+	            // Check if the response is successful
+	            if (!response.ok) {
+	                throw new Error('Failed to start crawl');
+	            }
+	            // Parse the JSON response
+	            return response.json();
+	        }).then(data => {
+	            console.log(data.id);
+	            addTaskToTable(data.id, keyword, 'IN_PROGRESS'); // Pass the keyword to the function
+	            checkStatus(data.id);
+	        });
+	        
+	    } catch (error) {
+	        console.error('Error:', error);
+	    }
+	});
+
+	function addTaskToTable(taskId, keyword, status, executionTime) {
+	    const taskTable = document.getElementById('taskTable').getElementsByTagName('tbody')[0];
+	    const newRow = taskTable.insertRow();
+	    newRow.setAttribute('id', 'task-' + taskId);
+
+	    const idCell = newRow.insertCell(0);
+	    const keywordCell = newRow.insertCell(1);
+	    const statusCell = newRow.insertCell(2);
+	    const executionTimeCell = newRow.insertCell(3);
+	    const resultsCell = newRow.insertCell(4);
+
+	    idCell.textContent = taskId;
+	    keywordCell.textContent = keyword;
+	    statusCell.textContent = status;
+	    executionTimeCell.textContent = executionTime;
+	    resultsCell.textContent = '';
+
+	    const viewResultsButton = document.createElement('button');
+	    viewResultsButton.textContent = 'View Results';
+	    viewResultsButton.setAttribute('onclick', `fetchResults('${taskId}')`);
+	    resultsCell.appendChild(viewResultsButton);
+	}
+
+	function updateTaskStatus(taskId, status, executionTime) {
+	    const taskRow = document.getElementById('task-' + taskId);
+	    const statusCell = taskRow.cells[2];
+	    const executionTimeCell = taskRow.cells[3];
+
+	    statusCell.textContent = status;
+	    executionTimeCell.textContent = executionTime;
+	}
+
+        function checkStatus(taskId) {
+            fetch(`/tasks/${taskId}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'DONE') {
+                        updateTaskStatus(taskId, 'DONE', data.executionTimeInSeconds);
+                    } else {
+                        updateTaskStatus(taskId, data.status);
+                        setTimeout(() => checkStatus(taskId), 5000);
+                    }
+                });
+        }
+
+        function fetchResults(taskId) {
+            fetch(`/tasks/${taskId}`)
+                .then(response => response.json())
+                .then(data => {
+                    const resultsPanel = window.open('', '_blank', 'width=600,height=400');
+                    resultsPanel.document.write('<h2>Results:</h2>');
+                    data.results.forEach(url => {
+                        resultsPanel.document.write(`<p>${url}</p>`);
+                    });
+                });
+        }
+    </script>
+</body>
+</html>
