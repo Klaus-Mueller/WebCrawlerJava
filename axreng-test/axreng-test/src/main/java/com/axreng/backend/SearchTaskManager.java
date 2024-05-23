@@ -7,19 +7,25 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 
+import com.axreng.backend.util.PageCache;
+
 public class SearchTaskManager {
 	private Map<String, SearchTask> tasks = new ConcurrentHashMap<>();
-	private ExecutorService executorService = Executors.newCachedThreadPool();
-	private WebCrawler webCrawler;
+	private static final int NUM_THREADS = 5;
+	private ExecutorService executorService;
+	private final PageCache pageCache;
+	private String baseURL;
 
-	public SearchTaskManager (WebCrawler webCrawler) {
-		this.webCrawler = webCrawler;
+	public SearchTaskManager (String baseURL) {
+		this.executorService = Executors.newFixedThreadPool(NUM_THREADS);
+		this.baseURL = baseURL;
+		this.pageCache = new PageCache();
 	}
 
 	public String startSearch(String keyword) {
 		SearchTask task = new SearchTask(keyword);
 		tasks.put(task.getId(), task);
-		executorService.submit(() -> webCrawler.crawl(task));
+		executorService.submit(() -> new WebCrawler(this.baseURL, this.pageCache).crawl(task));
 		return task.getId();
 	}
 

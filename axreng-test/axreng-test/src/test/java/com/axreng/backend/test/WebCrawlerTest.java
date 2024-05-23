@@ -16,17 +16,19 @@ import org.junit.jupiter.api.Test;
 
 import com.axreng.backend.SearchTask;
 import com.axreng.backend.WebCrawler;
+import com.axreng.backend.util.PageCache;
 
 public class WebCrawlerTest {
 	
 	private WebCrawler webCrawler;
     private String baseURL;
     private Set<String> visitedUrls;
-
+    private PageCache pageCache;
     @BeforeEach
     public void setUp() {
         baseURL = "http://example.com";
-        webCrawler = new WebCrawler(baseURL);
+        pageCache =  new PageCache();
+        webCrawler = new WebCrawler(baseURL, pageCache);
         visitedUrls = new HashSet<>();
     }
 

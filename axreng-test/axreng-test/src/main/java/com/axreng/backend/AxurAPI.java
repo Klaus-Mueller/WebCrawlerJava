@@ -13,7 +13,6 @@ public class AxurAPI {
 
 	private int port;
 	private Gson gson;
-	private WebCrawler webCrawler;
 	private RouteHandler routeHandler;
 	private SearchTaskManager searchTaskManager;
 
@@ -25,8 +24,7 @@ public class AxurAPI {
 		this.routeHandler = routeHandler;
 		port(this.port);
 		this.gson = new Gson();
-		this.webCrawler = new WebCrawler(baseURL);
-		this.searchTaskManager = new SearchTaskManager(this.webCrawler);
+		this.searchTaskManager = new SearchTaskManager(baseURL);
 		logger.info("AxurAPI initialized with port: {} and baseURL: {}", port, baseURL);
 	}
 
@@ -60,7 +58,4 @@ public class AxurAPI {
 		return gson;
 	}
 
-	public WebCrawler getWebCrawler() {
-		return webCrawler;
-	}
 }

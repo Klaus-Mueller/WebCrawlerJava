@@ -40,7 +40,6 @@ public class AxurAPITest {
 		assertNotNull(axurAPI);
 		assertEquals(port, axurAPI.getPort());
 		assertNotNull(axurAPI.getGson());
-		assertNotNull(axurAPI.getWebCrawler());
 	}
 
 

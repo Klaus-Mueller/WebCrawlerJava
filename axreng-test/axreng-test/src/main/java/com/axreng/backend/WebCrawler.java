@@ -10,7 +10,6 @@ import java.util.regex.Pattern;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.axreng.backend.SearchTask.Status;
 import com.axreng.backend.util.HttpHelper;
 import com.axreng.backend.util.PageCache;
 
@@ -20,10 +19,10 @@ public class WebCrawler {
 	private ConcurrentLinkedQueue<String> urlsToVisit = new ConcurrentLinkedQueue<>();
 	private static final Logger logger = LoggerFactory.getLogger(WebCrawler.class);
 
-	public WebCrawler(String baseURL) {
+	public WebCrawler(String baseURL, PageCache pageCache) {
 		super();
 		this.baseURL = baseURL;
-		this.pageCache = new PageCache();
+		this.pageCache = pageCache;
 	}
 
 	public void crawl(SearchTask task) {

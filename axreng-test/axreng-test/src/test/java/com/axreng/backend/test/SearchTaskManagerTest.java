@@ -12,17 +12,15 @@ import org.junit.jupiter.api.Test;
 
 import com.axreng.backend.SearchTask;
 import com.axreng.backend.SearchTaskManager;
-import com.axreng.backend.WebCrawler;
 
 public class SearchTaskManagerTest {
-
-	private final WebCrawler webCrawler = new WebCrawler("http://example.com");
+	private final String baseURL = "http://example.com";
 	private final ExecutorService executorService = Executors.newFixedThreadPool(10); // Number of concurrent requests
-	private final SearchTaskManager searchTaskManager = new SearchTaskManager(this.webCrawler);
+	private final SearchTaskManager searchTaskManager = new SearchTaskManager(baseURL);
 
 	@Test
 	public void testStartSearch() {
-		SearchTaskManager searchTaskManager = new SearchTaskManager(this.webCrawler);
+		SearchTaskManager searchTaskManager = new SearchTaskManager(baseURL);
 		String taskId = searchTaskManager.startSearch("test");
 		// Assert
 		assertNotNull(taskId);
